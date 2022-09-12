@@ -77,8 +77,6 @@ public class BooksDaoImpl implements BooksDao {
 			List<Book> bookRecordsFiltered = new ArrayList<Book>();
 			
 			bookRecordsFiltered = jdbcTemplate.query(getRecord, new BookRowMapper(), category);
-//			Book bookRecordsFiltered = jdbcTemplate.queryForObject(getRecord, new BookRowMapper());
-			
 
 			System.out.println("book record: " + bookRecordsFiltered);
 			return bookRecordsFiltered;
@@ -95,8 +93,6 @@ public class BooksDaoImpl implements BooksDao {
 		
 			String getRecord = "select * from books where title like \"%"+ name+ "%\"";
 			System.out.println("sql: " + getRecord);
-//			String getRecord = "select * from books where title like '%M%'";
-
 			if (name.equals(null)) {
 				
 				name = "";
@@ -106,8 +102,6 @@ public class BooksDaoImpl implements BooksDao {
 			List<Book> bookRecordsFiltered = new ArrayList<Book>();
 			
 			bookRecordsFiltered = jdbcTemplate.query(getRecord, new BookRowMapper());
-//			Book bookRecordsFiltered = jdbcTemplate.queryForObject(getRecord, new BookRowMapper());
-			
 
 			System.out.println("book record: " + bookRecordsFiltered);
 			return bookRecordsFiltered;
