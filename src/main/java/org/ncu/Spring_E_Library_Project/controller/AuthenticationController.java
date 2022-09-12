@@ -28,31 +28,35 @@ public class AuthenticationController {
 	
 	
 	@PostMapping("/registerPage")
-	public String showUserLoginForm(@ModelAttribute("regUser") Authentication authUser) {
-		int r = regDao.addEntry(authUser);
-		if (r==1) {
-			System.out.println("Successfully registered");
-		    return "options";
-		}
-		else if (r==-1){
-			System.out.println("User already registered");
-			JOptionPane.showMessageDialog(null,"You are already registered. \nTry to login!!", "REGISTERED USER" ,JOptionPane.ERROR_MESSAGE);
-		    return "home";
-		}
+	public String showUserLoginForm(@Valid @ModelAttribute("regUser") Authentication authUser,BindingResult br) {
+		if(br.hasErrors()) {
+		System.out.println(br.getAllErrors());
+		JOptionPane.showMessageDialog(null,"Username should be 4 characters long. \nPassword should be minimum 8 characters long.", "INVALID CREDENTIALS" ,JOptionPane.ERROR_MESSAGE);
+		return "home";
+	    }
+		
 		else {
-			System.out.println("Error in registering");
-		    return "home";
+			int r = regDao.addEntry(authUser);
+			if (r==1) {
+				System.out.println("Successfully registered");
+			    return "options";
+			}
+			
+			else if (r==-1){
+				System.out.println("User already registered");
+				JOptionPane.showMessageDialog(null,"You are already registered. \nTry to login!!", "REGISTERED USER" ,JOptionPane.ERROR_MESSAGE);
+			    return "home";
+			}
+			else {
+				System.out.println("Error in registering");
+			    return "home";
+			}
 		}
-		   
 	}
 	
 	@PostMapping("/loginPage")
 	public String loginProcess(@ModelAttribute("regUser") Authentication authUser) {
-//		if(br.hasErrors()) {
-//			System.out.println(br.getAllErrors());
-//			return "options.jsp";
-//		}
-//		else {
+
 			int userLogin = regDao.login(authUser);
 
 			if(userLogin==1) {
@@ -68,7 +72,6 @@ public class AuthenticationController {
 				System.out.println("Wrong Password");    
 			    JOptionPane.showMessageDialog(null,"Incorrect password. \nRe-enter the details!!", "WRONG PASSWORD" ,JOptionPane.ERROR_MESSAGE);
 				return "home";
-//			}
 		}
 	}
 	
